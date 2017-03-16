@@ -80,7 +80,7 @@ The properties in the 'General' section determine which information is sent to t
 
 | value | Description |
 | --- | --- |
-| Selection | The selected object(s) will be sent to the microflow. If the grid allows multi-select the selection will be a list. If not, the selection will be exactly one object. |
+| Selection | The selected object(s) will be sent to the microflow. If the grid allows multi-select the selection will be a list if not, the selection will be exactly one object. |
 | Nothing | The grid selection is not sent to the microflow. |
 | All pages | All objects will be sent to the microflow in a list. |
 
