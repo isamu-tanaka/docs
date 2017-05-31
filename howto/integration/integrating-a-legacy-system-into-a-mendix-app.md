@@ -18,13 +18,59 @@ Mendix applications frequently need to communicate with existing systems. Whethe
 
 Before starting this how-to, make sure you have completed the following prerequisites:
 
+* **Have downloaded the Flat & Delimited File Importer App Store Module and all prerequisites**
 * Know how to create domain models (for details, see [How to Create a Basic Data Layer](../data-models/create-a-basic-data-layer))
 * Know how to create overview and detail pages (for details, see [How to Create Your First Two Overview and Detail Pages](../guis/create-your-first-two-overview-and-detail-pages))
 * Know how to create microflows (for details, see [How to Build Your First Microflow: Hello world!](../logic-business-rules/create-your-first-microflow-hello-world))
 * Understand the concepts behind REST and web services (for more information, see [Consuming Your First REST Service](http://www.mendix.com/blog/consuming-first-rest-service/) and [How to Consume a Complex Web Service](consume-a-complex-web-service))
     * Creating an exposed REST service on top of your legacy system is beyond the scope of this tutorial; for instructions on how to accomplish this, refer to the configuration of your non-Mendix platform
 
-## 3 Interacting with a Legacy System Using REST
+## 3 Importing Legacy data using a Flat File
+
+Consider the following situation: you have a legacy system with valuable data that needs to be translated into Mendix.  This system can produce a **flat or delimeted extract** of data .  In this chapter, you will learn how to use the **Flat & Delimited Import Module** to import this data directly into Mendix.  This process can be used for a one-time data transfer or a regular dump of data from one system to another thanks to the scheduling feature.  This approach is especially useful for **older data systems** that cannot accommodate more modern Web Service integrations.
+
+1.  Create a **Mendix object** that matches the data you want to input.  For the example provided, this **entity** is a 'Product' has two **attributes**, Value 1 and Value 2.
+    ![](attachments/18448737/18582058.png)
+2.  Now we must create the **Flat file Interface.** As per the instructions in the **Flat & Delimited Importer Module Release Notes,** add the page FlatFileInterface.InterfaceDefinition_Overview to your **Project Navigation**.
+3.  Start the app and navigate to the Interface Definition Overview page.
+4.  Select 'New' to create the Interface Definition
+    ![](attachments/18448737/18582053.png)
+5.  Select the **Product Entity** from the dropdown.
+
+    If this dropdown is empty, then it is likely that **Model Reflection** has been synced yet.  If you do not know how to execute this, please see instructions [here](importing-excel-documents).
+
+    ![](attachments/18448737/18582050.png)
+
+6.  Fill out the rest of the **Interface Definition** as follows.
+
+    ![](attachments/18448737/18582051.png)Some important notes about the settings here:
+
+    *   The '**Import directory**' is the location where the flat files will be landing.  In this example, it has been set to C://flatfile.  Please select a directory for which you have read access.
+    *   Text qualifier is set to 'None', meaning the data is encapsulated.  In this example that will be sufficient but take care to make sure all data is properly encapsulated and escaped if using more complex data sources
+7.  Click 'Save' and the **Columns** section will be come visible.  Click '**New**' to add columns
+8.  Add both columns for our **Product** entity.  Once complete it will look like this:
+    ![](attachments/18448737/18582049.png)
+9.  To test the connection, hit 'Test Execution' on the **InterfaceDefinition_Overview** page![](attachments/18448737/18582048.png)
+10.  Data in the sample file will now be imported into your application.  **Logs** for this operation are available in the **Logging** tab of the **InterfaceDefinition_NewEdit** page
+    ![](attachments/18448737/18582046.png)
+
+11.  To schedule regular ingestion of a flat file, you can use the scheduling tab of the **InterfaceDefinition_NewEdit** page
+    ![](attachments/18448737/18582045.png)
+
+        Scheduling your file for regular ingestion will allow you to ingest files dropped by your legacy system at a regular interval.  If the **existing system** receives data updates during the day and produces a **batch export** at night, then the Mendix app can ingest this file every evening as scheduled and the data will be ready for users the following morning.
+
+**Considerations for extending this:**
+
+*   See the wide range of configurable settings <Here>
+*   utilize the queuing function to enhance your imports <Link>
+*   Documentation for this module is included in the app store release and can be accessed here:
+    ![](attachments/18448737/18582044.png)
+
+**Importing Legacy Data using an Excel File**
+
+If your legacy system produces data in an **Excel File** format, integration can be accomplished using the Excel Imported App Store Module. Detailed instructions on how to import data to Mendix with Excel can be found here: [Importing Excel Documents](importing-excel-documents).
+
+## 4 Interacting with a Legacy System Using REST
 
 If the legacy system has the ability to expose its data to web services, integration can be accomplished using the Mendix REST module. This technique will allow your to preserve a system of record while accessing data only as you need it.
 
@@ -87,7 +133,7 @@ The above example demonstrates how a Mendix application can quickly integrate da
 
 For further documentation and to see the GitHub project for REST services, see the [Mendix RestServices GitHub page](https://github.com/mendix/RestServices).
 
-## 4 Related Content
+## 5 Related Content
 
 * [How to Consume a Complex Web Service](consume-a-complex-web-service)
 * [How to Consume a Simple Web Service](consume-a-simple-web-service)
